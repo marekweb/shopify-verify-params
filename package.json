@@ -1,0 +1,25 @@
+{
+  "name": "shopify-verify-params",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "lint": "xo src --space --esnext",
+    "build": "babel src --out-dir build",
+    "test": "npm run lint && babel-node test | tap-spec"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-preset-latest": "^6.14.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0",
+    "xo": "^0.16.0"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  }
+}
