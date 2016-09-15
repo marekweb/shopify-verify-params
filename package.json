@@ -2,7 +2,7 @@
   "name": "shopify-verify-params",
   "version": "0.0.2",
   "description": "",
-  "main": "build/index.js",
+  "main": "build/verify-params.js",
   "scripts": {
     "lint": "xo src --space --esnext",
     "build": "babel src --out-dir build",
