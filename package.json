@@ -2,13 +2,15 @@
   "name": "shopify-verify-params",
   "version": "0.0.3",
   "description": "",
+  "repository": "marekweb/shopify-verify-params",
   "main": "build/verify-params.js",
   "scripts": {
     "lint": "xo src --space --esnext",
-    "build": "babel src --out-dir build",
-    "test": "npm run lint && babel-node test | tap-spec"
+    "build": "rm -rf build/ && babel src --out-dir build",
+    "test": "npm run lint && babel-node test | tap-spec",
+    "prepublish": "npm build"
   },
-  "author": "",
+  "author": "Marek Zaluski <marekz@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.14.0",
