@@ -1,7 +1,8 @@
+'use strict';
 
-const calculatePayloadHmacSignature = require('./calculate-payload-hmac-signature');
+var calculatePayloadHmacSignature = require('./calculate-payload-hmac-signature');
 
 module.exports = function verifyPayload(providedSignature, signingKey, payload) {
-  const calculatedSignature = calculatePayloadHmacSignature(signingKey, payload);
-  return calculatedSignature === providedSignature;
+  var calculatedSignature = calculatePayloadHmacSignature(signingKey, payload);
+  return calculatedSignature && calculatedSignature === providedSignature;
 };

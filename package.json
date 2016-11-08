@@ -5,23 +5,17 @@
   "repository": "marekweb/shopify-verify-params",
   "main": "build/verify-params.js",
   "scripts": {
-    "lint": "xo src --space --esnext",
-    "build": "rm -rf build/ && babel src --out-dir build",
-    "test": "npm run lint && babel-node test | tap-spec",
-    "prepublish": "npm build"
+    "lint": "xo --space --fix",
+    "test": "tap test.js"
   },
   "author": "Marek Zaluski <marekz@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.14.0",
-    "babel-preset-latest": "^6.14.0",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.0",
-    "xo": "^0.16.0"
+    "tap": "^8.0.0",
+    "tape": "^4.6.2",
+    "xo": "^0.17.0"
   },
-  "babel": {
-    "presets": [
-      "latest"
-    ]
+  "dependencies": {
+    "lodash": "^4.16.6"
   }
 }
