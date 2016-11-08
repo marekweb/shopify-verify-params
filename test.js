@@ -1,63 +1,70 @@
-const test = require('tape');
+var test = require('tape');
 
-const calculateHmacSignature = require('./src/calculate-hmac-signature');
-const calculatePayloadHmacSignature = require('./src/calculate-payload-hmac-signature');
-const verifyPayload = require('./src/verify-payload');
-const verifyParams = require('./src/verify-params');
+var calculateHmacSignature = require('./src/calculate-hmac-signature');
+var calculatePayloadHmacSignature = require('./src/calculate-payload-hmac-signature');
+var verifyPayload = require('./src/verify-payload');
+var verifyParams = require('./src/verify-params');
 
-test('calculateHmacSignature should match Shopify docs example', t => {
-  const text = 'code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173';
-  const key = 'hush';
-  const hmac = calculateHmacSignature(key, text);
-  console.log(hmac);
+test('calculateHmacSignature should match Shopify docs example', function (t) {
+  var text = 'code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173';
+  var key = 'hush';
+  var hmac = calculateHmacSignature(key, text);
   t.equal(hmac, '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20');
 
   t.end();
 });
 
-test('calculatePayloadHmacSignature should match Shopify docs example', t => {
-  const payload = {
+test('calculatePayloadHmacSignature should match Shopify docs example', function (t) {
+  var payload = {
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  const key = 'hush';
+  var key = 'hush';
 
-  const hmac = calculatePayloadHmacSignature(key, payload);
+  var hmac = calculatePayloadHmacSignature(key, payload);
 
   t.equal(hmac, '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20');
 
   t.end();
 });
 
-test('verifyPayload should work with the Shopify docs example', t=> {
-  const payload = {
+test('verifyPayload should work with the Shopify docs example', function (t) {
+  var payload = {
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  const hmac = '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20';
+  var hmac = '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20';
 
-  const key = 'hush';
-
-  t.ok(verifyPayload(hmac, key, payload));
+  t.ok(verifyPayload(hmac, 'hush', payload));
+  t.notOk(verifyPayload(hmac, 'mush', payload));
+  t.notOk(verifyPayload(hmac, 'mush', null));
+  t.notOk(verifyPayload(hmac, 'mush', {}));
+  t.notOk(verifyPayload('asdf', 'hush', payload));
+  t.notOk(verifyPayload('asdf', 'hush', payload));
+  t.notOk(verifyPayload('null', 'hush', payload));
 
   t.end();
 });
 
-test('verifyParams should work with the Shopify docs example', t => {
-  const payload = {
+test('verifyParams should work with the Shopify docs example', function (t) {
+  var payload = {
     hmac: '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20',
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  const key = 'hush';
+  t.ok(verifyParams('hush', payload));
 
-  t.ok(verifyParams(key, payload));
+  t.notOk(verifyParams('hosh', payload));
+  t.notOk(verifyParams('hush', null));
+  t.notOk(verifyParams('hush', {}));
 
   t.end();
 });
+
+test('verifyParams should reject the Shopify docs example with incorrect ');
