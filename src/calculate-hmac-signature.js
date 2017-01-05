@@ -9,7 +9,7 @@ module.exports = function calculateHmacSignature(key, text, encoding) {
     throw new Error('calculateHmacSignature: missing parameter "key"');
   }
 
-  if (text == null) {
+  if (!text) {
     throw new Error('calculateHmacSignature: missing parameter "text"');
   }
 
