@@ -10,7 +10,7 @@ module.exports = function calculateHmacSignature(key, text, encoding) {
   }
 
   if (!text) {
-    throw new Error('calculateHmacSignature: missing parameter "text"');
+    text = '';
   }
 
   var hmac = crypto.createHmac('sha256', key);
