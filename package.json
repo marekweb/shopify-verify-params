@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "repository": "marekweb/shopify-verify-params",
-  "main": "build/verify-params.js",
+  "main": "src/verify-params.js",
   "scripts": {
     "lint": "xo --space --fix",
     "test": "tap test.js"
