@@ -15,10 +15,7 @@ module.exports = function verifyParams(signingKey, payload) {
   }
 
   // Make a copy of the payload, and remove the hmac and signature params.
-  var payloadWithoutSignature = _.clone(payload);
-
-  delete payloadWithoutSignature.hmac;
-  delete payloadWithoutSignature.signature;
+  var payloadWithoutSignature = _.omit(payload, ['hmac', 'signature']);
 
   return verifyPayload(providedSignature, signingKey, payloadWithoutSignature);
 };
