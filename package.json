@@ -1,6 +1,6 @@
 {
   "name": "shopify-verify-params",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "repository": "marekweb/shopify-verify-params",
   "main": "src/verify-params.js",
