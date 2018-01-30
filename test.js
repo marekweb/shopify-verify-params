@@ -1,74 +1,74 @@
-var test = require('tape');
+/**
+ * @jsdom-environment node
+ */
 
-var calculateHmacSignature = require('./src/calculate-hmac-signature');
-var calculatePayloadHmacSignature = require('./src/calculate-payload-hmac-signature');
-var verifyPayload = require('./src/verify-payload');
-var verifyParams = require('./src/verify-params');
+const calculateHmacSignature = require('./src/calculate-hmac-signature');
+const calculatePayloadHmacSignature = require('./src/calculate-payload-hmac-signature');
+const verifyPayload = require('./src/verify-payload');
+const verifyParams = require('./src/verify-params');
 
-test('calculateHmacSignature should match Shopify docs example', function (t) {
-  var text = 'code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173';
-  var key = 'hush';
-  var hmac = calculateHmacSignature(key, text);
-  t.equal(hmac, '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20');
-
-  t.end();
+test('calculateHmacSignature should match Shopify docs example', () => {
+  const text =
+    'code=0907a61c0c8d55e99db179b68161bc00&shop=some-shop.myshopify.com&timestamp=1337178173';
+  const key = 'hush';
+  const hmac = calculateHmacSignature(key, text);
+  expect(hmac).toBe(
+    '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20'
+  );
 });
 
-test('calculatePayloadHmacSignature should match Shopify docs example', function (t) {
-  var payload = {
+test('calculatePayloadHmacSignature should match Shopify docs example', () => {
+  const payload = {
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  var key = 'hush';
+  const key = 'hush';
 
-  var hmac = calculatePayloadHmacSignature(key, payload);
+  const hmac = calculatePayloadHmacSignature(key, payload);
 
-  t.equal(hmac, '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20');
-
-  t.end();
+  expect(hmac).toBe(
+    '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20'
+  );
 });
 
-test('verifyPayload should work with the Shopify docs example', function (t) {
-  var payload = {
+test('verifyPayload should work with the Shopify docs example', () => {
+  const payload = {
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  var hmac = '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20';
+  const hmac =
+    '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20';
 
-  t.ok(verifyPayload(hmac, 'hush', payload));
-  t.notOk(verifyPayload(hmac, 'mush', payload));
-  t.notOk(verifyPayload(hmac, 'mush', null));
-  t.notOk(verifyPayload(hmac, 'mush', {}));
-  t.notOk(verifyPayload('asdf', 'hush', payload));
-  t.notOk(verifyPayload('asdf', 'hush', payload));
-  t.notOk(verifyPayload('null', 'hush', payload));
-
-  t.end();
+  expect(verifyPayload(hmac, 'hush', payload)).toBeTruthy();
+  expect(verifyPayload(hmac, 'mush', payload)).toBeFalsy();
+  expect(verifyPayload(hmac, 'mush', null)).toBeFalsy();
+  expect(verifyPayload(hmac, 'mush', {})).toBeFalsy();
+  expect(verifyPayload('asdf', 'hush', payload)).toBeFalsy();
+  expect(verifyPayload('asdf', 'hush', payload)).toBeFalsy();
+  expect(verifyPayload('null', 'hush', payload)).toBeFalsy();
 });
 
-test('verifyParams should work with the Shopify docs example', function (t) {
-  var payload = {
+test('verifyParams should work with the Shopify docs example', () => {
+  const payload = {
     hmac: '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20',
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  t.ok(verifyParams('hush', payload));
+  expect(verifyParams('hush', payload)).toBeTruthy();
 
-  t.notOk(verifyParams('hosh', payload));
-  t.notOk(verifyParams('hush', null));
-  t.notOk(verifyParams('hush', {}));
-
-  t.end();
+  expect(verifyParams('hosh', payload)).toBeFalsy();
+  expect(verifyParams('hush', null)).toBeFalsy();
+  expect(verifyParams('hush', {})).toBeFalsy();
 });
 
-test('verifyParams should ignore signature parameter', function (t) {
-  var payload = {
+test('verifyParams should ignore signature parameter', () => {
+  const payload = {
     hmac: '4712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20',
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
@@ -76,22 +76,19 @@ test('verifyParams should ignore signature parameter', function (t) {
     signature: '4d20a2730c82baf2'
   };
 
-  t.ok(verifyParams('hush', payload));
-  t.end();
+  expect(verifyParams('hush', payload)).toBeTruthy();
 });
 
-test('verifyParams should reject the Shopify docs example with incorrect signature', function (t) {
-  var payload = {
+test('verifyParams should reject the Shopify docs example with incorrect signature', () => {
+  const payload = {
     hmac: 'x712bf92ffc2917d15a2f5a273e39f0116667419aa4b6ac0b3baaf26fa3c4d20',
     code: '0907a61c0c8d55e99db179b68161bc00',
     shop: 'some-shop.myshopify.com',
     timestamp: 1337178173
   };
 
-  t.notOk(verifyParams('hush', payload));
-  t.notOk(verifyParams('hosh', payload));
-  t.notOk(verifyParams('hush', null));
-  t.notOk(verifyParams('hush', {}));
-
-  t.end();
+  expect(verifyParams('hush', payload)).toBeFalsy();
+  expect(verifyParams('hosh', payload)).toBeFalsy();
+  expect(verifyParams('hush', null)).toBeFalsy();
+  expect(verifyParams('hush', {})).toBeFalsy();
 });

@@ -10,9 +10,7 @@ module.exports = function calculatePayloadHmacSignature(key, payload) {
   }
 
   const keys = Object.keys(payload).sort();
-  const text = keys.map(key =>
-    `${key}=${payload[key]}`
-  ).join('&');
+  const text = keys.map(key => `${key}=${payload[key]}`).join('&');
 
   return calculateHmacSignature(key, text);
 };
