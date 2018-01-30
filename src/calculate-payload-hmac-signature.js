@@ -1,7 +1,4 @@
-'use strict';
-
-var _ = require('lodash');
-var calculateHmacSignature = require('./calculate-hmac-signature');
+const calculateHmacSignature = require('./calculate-hmac-signature');
 
 module.exports = function calculatePayloadHmacSignature(key, payload) {
   if (!key) {
@@ -12,10 +9,10 @@ module.exports = function calculatePayloadHmacSignature(key, payload) {
     return '';
   }
 
-  var keys = _.keys(payload).sort();
-  var text = keys.map(function (key) {
-    return key + '=' + payload[key];
-  }).join('&');
+  const keys = Object.keys(payload).sort();
+  const text = keys.map(key =>
+    `${key}=${payload[key]}`
+  ).join('&');
 
-  return calculateHmacSignature(key, text, 'hex');
+  return calculateHmacSignature(key, text);
 };

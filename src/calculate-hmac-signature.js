@@ -1,19 +1,7 @@
-'use strict';
+const crypto = require('crypto');
 
-var crypto = require('crypto');
-
-module.exports = function calculateHmacSignature(key, text, encoding) {
-  encoding = encoding || 'hex';
-
-  if (!key) {
-    throw new Error('calculateHmacSignature: missing parameter "key"');
-  }
-
-  if (!text) {
-    text = '';
-  }
-
-  var hmac = crypto.createHmac('sha256', key);
+module.exports = function calculateHmacSignature(key, text = '') {
+  const hmac = crypto.createHmac('sha256', key);
   hmac.update(text);
-  return hmac.digest(encoding);
+  return hmac.digest('hex');
 };
