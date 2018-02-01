@@ -1,6 +1,9 @@
 # Check Shopify Params (HMAC verification)
 
-`shopify-verify-params` verifies the HMAC signature of a set of Shopify parameters.
+![npm](https://img.shields.io/npm/v/shopify-verify-params.svg?maxAge=259200) ![travis](https://travis-ci.org/marekweb/shopify-verify-params.svg?branch=master) ![node](https://img.shields.io/badge/node-%3E=8.1-blue.svg)
+
+
+Verify the HMAC signature of a set of Shopify parameters.
 
 ## When to use it?
 
@@ -28,7 +31,7 @@ app.get('/oauth/callback', (req, res, next) => {
     res.send('Cannot verify the params!');
     return;
   }
-  
+
   // Otherwise, continue to handle the request.
   // ...
 });
